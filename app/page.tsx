@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-purple-50 to-pink-50">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-blue-100 to-purple-100 py-20">
+      <div className="relative h-[600px] flex items-center justify-center bg-gradient-to-r from-blue-100 to-purple-100 py-20">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center">
             <h1 className="mb-6 text-5xl font-bold tracking-tight text-blue-600">
@@ -22,6 +22,21 @@ export default function Home() {
               Start Learning Now
             </Button>
           </div>
+        </div>
+        <div className="absolute top-0 p-8 left-0 w-full h-full pointer-events-none">
+          {generateRandomLetters().map((letter, index) => (
+            <span
+              key={index}
+              className={`absolute text-6xl font-bold animate-bounce bg-clip-text text-transparent ${letter.color}`}
+              style={{
+                top: `${letter.top}%`,
+                left: `${letter.left}%`,
+                animationDuration: `${Math.random() * 2 + 2}s`,
+              }}
+            >
+              {letter.char}
+            </span>
+          ))}
         </div>
       </div>
 
@@ -173,4 +188,57 @@ export default function Home() {
       </section>
     </main>
   );
+}
+
+function generateRandomLetters() {
+  const letters = ["A", "B", "C", "D"];
+  const colors = [
+    "bg-gradient-to-r from-red-400 to-pink-500",
+    "bg-gradient-to-r from-blue-400 to-teal-500",
+    "bg-gradient-to-r from-green-400 to-yellow-500",
+    "bg-gradient-to-r from-purple-400 to-indigo-500",
+  ];
+
+  // Ensure the corners are always occupied
+  const positions = [
+    { top: 0, left: 0 }, // Top-left
+    { top: 0, left: 90 }, // Top-right
+    { top: 90, left: 0 }, // Bottom-left
+    { top: 90, left: 90 }, // Bottom-right
+  ];
+
+  // Fill corners with guaranteed letters
+  const usedPositions = [...positions];
+
+  const letterObjects = positions.map((pos, index) => ({
+    char: letters[index % letters.length],
+    color: colors[Math.floor(Math.random() * colors.length)],
+    top: pos.top,
+    left: pos.left,
+  }));
+
+  // Add random letters at random positions (ensuring uniqueness and avoiding center)
+  for (let i = 0; i < 4; i++) {
+    let top: number, left: number;
+    do {
+      top = Math.random() * 90; // Randomize vertical position
+      left = Math.random() * 90; // Randomize horizontal position
+    } while (
+      usedPositions.some(
+        (pos) => Math.abs(pos.top - top) < 5 && Math.abs(pos.left - left) < 5 // Avoid overlap
+      ) ||
+      (top > 40 && top < 60 && left > 40 && left < 60) // Avoid center area
+    );
+
+    usedPositions.push({ top, left });
+
+    letterObjects.push({
+      char: letters[Math.floor(Math.random() * letters.length)],
+      color: colors[Math.floor(Math.random() * colors.length)],
+      top,
+      left,
+    });
+  }
+
+  return letterObjects;
 }
