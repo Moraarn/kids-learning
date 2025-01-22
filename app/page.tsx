@@ -94,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* Learning Paths */}
-      <section className="bg-white py-20">
+      <section className=" py-20">
         <div className="container mx-auto px-4">
           <h2 className="mb-12 text-center text-3xl font-bold text-blue-600">
             Start Your German Adventure! 🚀
@@ -137,7 +137,7 @@ export default function Home() {
                   Advanced Explorer
                 </h3>
                 <p className="mb-4 text-purple-600">
-                  Master German through immersive activities
+                  Master German through immersive productive activities
                 </p>
                 <Button className="w-full bg-purple-500 hover:bg-purple-600">
                   Explore More
